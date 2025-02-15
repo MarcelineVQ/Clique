@@ -25,6 +25,8 @@ local L = AceLibrary:GetInstance("AceLocale-2.0"):new("Clique")
 -- Expoxe AceHook and AceEvent to our modules
 Clique:SetModuleMixins("AceHook-2.0", "AceEvent-2.0", "AceDebug-2.0")
 
+local has_superwow = SetAutoloot and true or false
+
 --[[---------------------------------------------------------------------------------
   This is the actual addon object
 ----------------------------------------------------------------------------------]]
@@ -37,13 +39,17 @@ function Clique:OnInitialize()
     for name,module in self:IterateModules() do
         self:ToggleModuleActive(name, false)
     end
+
+    MAX_SKILLLINE_TABS = 9
+    local tab1 = getglobal("SpellBookSkillLineTab1")
+    tab1:SetPoint("TOPLEFT", tab1:GetParent(), "TOPRIGHT",-32,-47)
 end
 
 function Clique:OnEnable()
     self:LevelDebug(2, "Clique:OnEnable()")
     IndentationLib.addSmartCode(CliqueEditBox)
 
-    if GetCVar("AutoSelfCast") == "1" then
+    if not has_superwow and GetCVar("AutoSelfCast") == "1" then
         StaticPopup_Show("CLIQUE_AUTO_SELF_CAST")
         return
     end
@@ -246,11 +252,34 @@ function Clique:OnClick(button, unit)
     end
 end
 
+-- function Clique:CastSpell(spell, unit)
+-- 	unit = unit or Clique.unit
+
+--     if has_superwow then
+--         local _,guid = UnitExists(unit)
+
+--         self:LevelDebug(2, "Clique:CastSpell("..tostring(spell)..", "..tostring(unit) .. ")")
+
+--         CastSpellByName(spell,guid)
+--     else
+--         CastSpellByName(spell,onSelf)
+-- end
+
 function Clique:CastSpell(spell, unit)
 	local restore = nil
 	local targettarget
 	unit = unit or Clique.unit
-    
+
+    if has_superwow then
+        local _,guid = UnitExists(unit)
+        if not guid then return end
+
+        self:LevelDebug(2, "Clique:CastSpell("..tostring(spell)..", "..tostring(unit) .. ")")
+
+        CastSpellByName(spell,guid)
+        return
+    end
+
     -- IMPORTANT: If the unit is targettarget or more, then we need to try
     -- to convert it to a friendly unit (to make click-casting work
     -- properly). If this isn't successful, set it up so we restore our 

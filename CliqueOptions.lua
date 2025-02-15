@@ -20,7 +20,7 @@ function Clique:SpellBookFrame_OnShow()
     Clique:ListScrollUpdate()
 
     local button
-    for i=2,8 do
+    for i=2,MAX_SKILLLINE_TABS do
         button = getglobal("SpellBookSkillLineTab"..i)
         if not button:IsVisible() then
             CliquePulloutTab:ClearAllPoints()
@@ -74,7 +74,7 @@ function Clique:SpellButton_OnClick()
 end
 
 StaticPopupDialogs["CLIQUE_AUTO_SELF_CAST"] = {
-	text = "Clique will not work properly with Blizzard's AutoSelfCast.  Please disable it.",
+	text = "Clique will not work properly with Blizzard's AutoSelfCast.  Please disable it or use SuperWoW.",
 	button1 = TEXT(OKAY),
 	OnAccept = function()
 	end,

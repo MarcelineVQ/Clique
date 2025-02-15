@@ -14,6 +14,7 @@
     <Script file="Clique_HealersAssist.lua"/>    
 	<Script file="Clique_HealSelect.lua"/>    
 	<Script file="Clique_IceHUD.lua"/>
+	<Script file="Clique_LUA.lua"/>
 	<Script file="Clique_MarsRaid.lua"/>
 	<Script file="Clique_MG2-64PRE.lua"/>
 	<Script file="Clique_Needy.lua"/>
